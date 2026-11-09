@@ -39,7 +39,11 @@ class CreateSeatController extends AbstractController
             );
         }
 
-        $dto = new CreateSeatDto($flight, $request);
+        $data = json_decode($request->getContent(), true);
+
+        $dto = new CreateSeatDto();
+        $dto->flight = $flight;
+        $dto->code = $data['code'] ?? '';
 
         $errors = $this->validator->validate($dto);
 

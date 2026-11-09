@@ -28,19 +28,4 @@ class CreateSeatDto
      */
     #[Map(target: 'flight')]
     public Flight $flight;
-
-    /**
-     * Creates a new CreateSeatDto instance.
-     *
-     * @param Flight  $flight  The flight associated with the seat.
-     * @param Request $request The HTTP request containing the seat data.
-     */
-    public function __construct($flight, Request $request)
-    {
-        $data = json_decode($request->getContent(), true);
-
-        $this->code = $data['code'] ?? '';
-
-        $this->flight = $flight;
-    }
 }
