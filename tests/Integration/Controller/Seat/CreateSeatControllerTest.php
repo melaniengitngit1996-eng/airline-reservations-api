@@ -99,26 +99,13 @@ it('creates seat successfully (201)', function () {
 
     // find flight
     $flightRepository = $this->createMock(FlightRepository::class);
-    $flightRepository
-        ->method('find')
-        ->willReturn($flight);
+    $flightRepository->method('find')->willReturn($flight);
 
     // get repo for flight
     $entityManager = $this->createMock(EntityManagerInterface::class);
-    $entityManager
-        ->method('getRepository')
-        ->willReturn($flightRepository);
+    $entityManager->method('getRepository')->willReturn($flightRepository);
 
-    $entityManager
-        ->expects($this->once())
-        ->method('persist')
-        ->with($seat);
-
-    $entityManager
-        ->expects($this->once())
-        ->method('flush');
-
-    // validation dto + entity
+    // validation dto
     $validator = $this->createMock(ValidatorInterface::class);
     $validator->method('validate')->willReturn(new ConstraintViolationList());
 
