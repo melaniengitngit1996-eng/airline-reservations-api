@@ -2,59 +2,15 @@
 
 namespace App\Controller\Flight;
 
+use App\Controller\AbstractController;
 use App\Dto\Flight\CreateFlightDto;
+use App\Entity\Airport;
 use App\Entity\Flight;
-use App\Repository\AirportRepository;
-use DateTimeImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\ObjectMapper\ObjectMapperInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route('/api/flights')]
-class CreateFlightController {
-    /**
-     * Repository for retrieving airport records.
-     */
-    private AirportRepository $airportRepository;
-    
-    /**
-     * Entity manager for persisting flight entities.
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * Validator for validating the flight DTO.
-     */
-    private ValidatorInterface $validator;
-
-    /**
-     * Object mapper for mapping the flight DTO to the Flight entity.
-     */
-    private ObjectMapperInterface $objectMapper;
-
-    /**
-     * Creates a new CreateFlightController instance.
-     *
-     * @param AirportRepository $airportRepository Repository for retrieving airport records.
-     * @param EntityManagerInterface $entityManager Entity manager for database operations.
-     * @param ValidatorInterface $validator Validator for validating the DTO.
-     * @param ObjectMapperInterface $objectMapper Object mapper for DTO-to-entity mapping.
-     */
-    public function __construct(
-        AirportRepository $airportRepository,
-        EntityManagerInterface $entityManager,
-        ValidatorInterface $validator,
-        ObjectMapperInterface $objectMapper
-    ) {
-        $this->airportRepository = $airportRepository;
-        $this->entityManager = $entityManager;
-        $this->validator = $validator;
-        $this->objectMapper = $objectMapper;
-    }
-
+class CreateFlightController extends AbstractController {
     /**
      * Creates a new flight.
      *
@@ -62,7 +18,7 @@ class CreateFlightController {
      *
      * @return JsonResponse The created flight or a validation error response.
      */
-    #[Route('', methods: ['POST'])]
+    #[Route('/api/flights', methods: ['POST'])]
     public function __invoke(Request $request)
     {
         $data = json_decode($request->getContent(), true);
@@ -73,13 +29,15 @@ class CreateFlightController {
             ], 400);
         }
 
+        $airportRepository = $this->entityManager->getRepository(Airport::class);
+
         $departureAirport = null;
 
-        if ($data['departure_airport_id']) {
-            $departureAirport = $this->airportRepository->find($data['departure_airport_id']);
+        if (isset($data['departure_airport_id'])) {
+            $departureAirport = $airportRepository->find($data['departure_airport_id']);
         }
 
-        if (!$departureAirport) {
+        if ($departureAirport === null) {
             return new JsonResponse([
                 'message' => 'Airport not found.'
             ], 404);
@@ -87,11 +45,11 @@ class CreateFlightController {
 
         $arrivalAirport = null;
 
-        if ($data['arrival_airport_id']) {
-            $arrivalAirport = $this->airportRepository->find($data['arrival_airport_id']);
+        if (isset($data['arrival_airport_id'])) {
+            $arrivalAirport = $airportRepository->find($data['arrival_airport_id']);
         }
 
-        if (!$arrivalAirport) {
+        if ($arrivalAirport === null) {
             return new JsonResponse([
                 'message' => 'Airport not found.'
             ], 404);

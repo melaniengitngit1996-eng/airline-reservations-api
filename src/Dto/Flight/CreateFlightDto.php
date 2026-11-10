@@ -14,7 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * Maps the incoming flight data to the Flight entity.
  */
-#[Map(target: Flight::class)]
 class CreateFlightDto {
     /**
      * The flight's flight number.
