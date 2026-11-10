@@ -2,52 +2,18 @@
 
 namespace App\Controller\Passenger;
 
+use App\Controller\AbstractController;
 use App\Dto\Passengers\CreatePassengerDto;
 use App\Entity\Passenger;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\ObjectMapper\ObjectMapperInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Controller for creating a new passenger.
  */
-class CreatePassengerController
+class CreatePassengerController extends AbstractController
 {
-    /**
-     * Entity manager for persisting passenger entities.
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * Validator for validating the passenger DTO.
-     */
-    private ValidatorInterface $validator;
-
-    /**
-     * Object mapper for mapping the passenger DTO to the Passenger entity.
-     */
-    private ObjectMapperInterface $objectMapper;
-
-    /**
-     * Creates a new CreatePassengerController instance.
-     *
-     * @param EntityManagerInterface $entityManager Entity manager for database operations.
-     * @param ValidatorInterface $validator Validator for validating the DTO.
-     * @param ObjectMapperInterface $objectMapper Object mapper for DTO-to-entity mapping.
-     */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        ValidatorInterface $validator,
-        ObjectMapperInterface $objectMapper
-    ) {
-        $this->entityManager = $entityManager;
-        $this->validator = $validator;
-        $this->objectMapper = $objectMapper;
-    }
-
     /**
      * Creates a new passenger.
      *
@@ -58,21 +24,21 @@ class CreatePassengerController
     #[Route('/api/passengers', methods: ['POST'])]
     public function __invoke(Request $request)
     {
+        $data = json_decode($request->getContent(), true);
+
         $dto = new CreatePassengerDto($request);
+        $dto->firstName = $data['first_name'] ?? '';
+        $dto->lastName = $data['last_name'] ?? '';
+        $dto->email = $data['email'] ?? '';
 
         $errors = $this->validator->validate($dto);
         
         if (count($errors) > 0) {
-            $message = "Required fields are missing.";
-            
-            if ($errors[0]->getMessage() == 'Invalid email address.') {
-                $message = $errors[0]->getMessage();
-            }
-
-            return new JsonResponse([
-                'message' => $message,
-                'errors' => (string) $errors,
-            ], 400);
+            return $this->errorResponse(
+                $errors[0]->getMessage(),
+                400,
+                (string) $errors
+            );
         }
         
         $passenger = $this->objectMapper->map($dto, Passenger::class);
@@ -80,7 +46,7 @@ class CreatePassengerController
         $this->entityManager->persist($passenger);
         $this->entityManager->flush();
 
-        return new JsonResponse([
+        return $this->successResponse([
             'id' => $passenger->getId(),
             'first_name' => $passenger->getFirstName(),
             'last_name' => $passenger->getLastName(),

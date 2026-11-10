@@ -1,5 +1,14 @@
 <?php
 
+it('has create passenger API endpoint', function () {
+    $client = $this->createClient();
+
+    $client->jsonRequest('POST', '/api/passengers', []);
+
+    expect($client->getResponse()->getStatusCode())
+        ->not->toBe(404);
+});
+
 it('creates a passenger successfully (201)', function () {
     $client = $this->createClient();
     $client->jsonRequest('POST', '/api/passengers', [

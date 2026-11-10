@@ -18,36 +18,22 @@ class CreatePassengerDto
     /**
      * The passenger's first name.
      */
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Required fields are missing.')]
     #[Map(target: 'firstName')]
-    public string $first_name = '';
+    public string $firstName = '';
 
     /**
      * The passenger's last name.
      */
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Required fields are missing.')]
     #[Map(target: 'lastName')]
-    public string $last_name = '';
+    public string $lastName = '';
 
     /**
      * The passenger's email address.
      */
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Required fields are missing.')]
     #[Assert\Email(message: 'Invalid email address.')]
     #[Map(target: 'email')]
     public string $email = '';
-
-    /**
-     * Creates a new CreatePassengerDto instance.
-     *
-     * @param Request $request The HTTP request containing the passenger data.
-     */
-    public function __construct(Request $request)
-    {
-        $data = json_decode($request->getContent(), true);
-
-        $this->first_name = $data['first_name'] ?? '';
-        $this->last_name = $data['last_name'] ?? '';
-        $this->email = $data['email'] ?? '';
-    }
 }
