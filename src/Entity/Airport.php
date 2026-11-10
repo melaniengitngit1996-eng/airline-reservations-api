@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table(name: 'airports')]
 #[ORM\UniqueConstraint(name: 'UNIQ_AIRPORT_CODE', columns: ['code'])]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity(fields: ['code'], message: 'This airport code already exists.')]
+#[UniqueEntity(fields: ['code'], message: 'Airport code already exists.')]
 class Airport
 {
     /**
