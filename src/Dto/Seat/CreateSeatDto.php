@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * Maps the incoming seat data to the Seat entity.
  */
-#[Map(target: Seat::class)]
 class CreateSeatDto
 {
     /**

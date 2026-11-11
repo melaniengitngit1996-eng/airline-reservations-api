@@ -13,7 +13,6 @@ use Symfony\Component\Routing\Attribute\Route;
 /**
  * Controller for creating seats associated with a specific flight.
  */
-#[Route('/api/flights/{flightId}/seats')]
 class CreateSeatController extends AbstractController
 {
     /**
@@ -24,7 +23,7 @@ class CreateSeatController extends AbstractController
      *
      * @return JsonResponse The created seat or an error response.
      */
-    #[Route('', methods: ['POST'])]
+    #[Route('/api/flights/{flightId}/seats', methods: ['POST'])]
     public function __invoke($flightId, Request $request)
     {
         $flightRepository = $this->entityManager
@@ -32,7 +31,7 @@ class CreateSeatController extends AbstractController
 
         $flight = $flightRepository->find($flightId);
 
-        if (!$flight) {
+        if ($flight === null) {
             return $this->errorResponse(
                 'Flight not found.',
                 404
