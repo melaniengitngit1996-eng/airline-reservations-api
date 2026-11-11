@@ -8,7 +8,7 @@ use App\Entity\ReservationPassenger;
 use Symfony\Component\Routing\Attribute\Route;
 
 class DeleteReservationPassengerController extends AbstractController {
-    #[Route('/api/reservations/{reservationId}/passengers/{passengerId}')]
+    #[Route('/api/reservations/{reservationId}/passengers/{passengerId}', methods: ['DELETE'])]
     public function __invoke(int $reservationId, int $passengerId)
     {
         $reservationRepository = $this->entityManager->getRepository(Reservation::class);
