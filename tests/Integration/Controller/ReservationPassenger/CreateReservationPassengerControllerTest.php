@@ -50,7 +50,7 @@ it('adds passenger with missing passenger id (404)', function () {
     );
 
     expect($response['message'])
-        ->toBe('Passengers not found.');
+        ->toBe('Required fields are missing.');
 });
 
 it('adds passenger with missing seat id (404)', function () {
@@ -73,7 +73,7 @@ it('adds passenger with missing seat id (404)', function () {
     );
 
     expect($response['message'])
-        ->toBe('Seat not found.');
+        ->toBe('Required fields are missing.');
 });
 
 it('adds passenger with unknown reservation (404)', function () {
@@ -121,7 +121,7 @@ it('adds passenger with unknown passenger (404)', function () {
     );
 
     expect($response['message'])
-        ->toBe('Passenger not found.');
+        ->toBe('Unknown passenger.');
 });
 
 it('adds passenger with unknown seat (404)', function () {
@@ -145,7 +145,7 @@ it('adds passenger with unknown seat (404)', function () {
     );
 
     expect($response['message'])
-        ->toBe('Seat not found.');
+        ->toBe('Unknown seat.');
 });
 
 it('adds passenger successfully (201)', function () {

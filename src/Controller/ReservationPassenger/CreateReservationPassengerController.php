@@ -26,8 +26,8 @@ class CreateReservationPassengerController extends AbstractController {
         foreach ($passengers as $passenger) {
             $passengerDto = new CreateReservationPassengerDto();
 
-            $passengerDto->passengerId = $passenger['passenger_id'];
-            $passengerDto->seatId = $passenger['seat_id'];
+            $passengerDto->passengerId = $passenger['passenger_id'] ?? 0;
+            $passengerDto->seatId = $passenger['seat_id'] ?? 0;
 
             $errors = $this->validator->validate($passengerDto);
 
