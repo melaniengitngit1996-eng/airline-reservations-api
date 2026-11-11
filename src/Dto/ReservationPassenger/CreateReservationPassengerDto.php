@@ -6,11 +6,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateReservationPassengerDto
 {
-    #[Assert\NotBlank(message: 'Passenger ID is required.')]
-    #[Assert\Positive(message: 'Passenger ID is required.')]
+    #[Assert\NotBlank(message: 'Required fields are missing.')]
+    #[Assert\Positive(message: 'Required fields are missing.')]
     public int $passengerId;
 
-    #[Assert\NotBlank(message: 'Seat ID is required.')]
-    #[Assert\Positive(message: 'Seat ID is required.')]
+    #[Assert\NotBlank(message: 'Required fields are missing.')]
+    #[Assert\Positive(message: 'Required fields are missing.')]
     public int $seatId;
 }
