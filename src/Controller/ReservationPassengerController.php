@@ -15,41 +15,6 @@ class ReservationPassengerController
     ) {
     }
 
-    #[Route('', methods: ['POST'])]
-    public function create(int $reservationId, Request $request): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
-
-        if (empty($data['passenger_id']) || empty($data['seat_id'])) {
-            return new JsonResponse([
-                'message' => 'Required fields are missing.'
-            ], 400);
-        }
-
-        try {
-            $reservationPassenger = $this->reservationPassengerService->create(
-                $reservationId,
-                $data
-            );
-        } catch (\DomainException $e) {
-            if ($e->getMessage() === 'Seat is already taken.' || $e->getMessage() === 'Passenger is already added to this reservation.') {
-                return new JsonResponse([
-                    'message' => $e->getMessage()
-                ], 409);
-            }
-
-            return new JsonResponse([
-                'message' => $e->getMessage()
-            ], 404);
-        }
-
-        return new JsonResponse([
-            'reservation_passenger_id' => $reservationPassenger->getId(),
-            'passenger_id' => $reservationPassenger->getPassenger()->getId(),
-            'seat_id' => $reservationPassenger->getSeat()->getId(),
-        ], 201);
-    }
-
     #[Route('', methods: ['GET'])]
     public function index(int $reservationId): JsonResponse
     {
