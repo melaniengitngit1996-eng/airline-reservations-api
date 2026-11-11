@@ -123,20 +123,20 @@ class ReservationPassengerController
         ]);
     }
 
-    #[Route('/{id}', methods: ['DELETE'])]
-    public function delete(int $reservationId, int $id): JsonResponse
-    {
-        try {
-            $this->reservationPassengerService->delete(
-                $reservationId,
-                $id
-            );
-        } catch (\DomainException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage()
-            ], 404);
-        }
+    // #[Route('/{id}', methods: ['DELETE'])]
+    // public function delete(int $reservationId, int $id): JsonResponse
+    // {
+    //     try {
+    //         $this->reservationPassengerService->delete(
+    //             $reservationId,
+    //             $id
+    //         );
+    //     } catch (\DomainException $e) {
+    //         return new JsonResponse([
+    //             'message' => $e->getMessage()
+    //         ], 404);
+    //     }
 
-        return new JsonResponse(null, 204);
-    }
+    //     return new JsonResponse(null, 204);
+    // }
 }
