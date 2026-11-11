@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * Maps the incoming passenger data to the Passenger entity.
  */
-#[Map(target: Passenger::class)]
 class CreatePassengerDto
 {
     /**
