@@ -11,37 +11,6 @@ use Symfony\Component\Routing\Attribute\Route;
 class ReservationController {
     public function __construct(private ReservationServiceInterface $reservationService) {}
 
-    #[Route('', methods: ['POST'])]
-    public function create(Request $request) {
-        $data = json_decode($request->getContent(), true);
-
-        if (empty($data['flight_id'])) {
-            return new JsonResponse([
-                'message' => 'Flight not found.'
-            ], 404);
-        }
-        
-        try {
-            $reservation = $this->reservationService->create($data);
-        } catch (\DomainException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage()
-            ], 404);
-        }
-
-        return new JsonResponse([
-            'reservation_id' => $reservation->getId(),
-            'flight' => [
-                'flight_id' => $reservation->getFlight()->getId(),
-                'flight_number' => $reservation->getFlight()->getFlightNumber(),
-                'departure_airport_id' => $reservation->getFlight()->getOriginAirport()->getId(),
-                'arrival_airport_id' => $reservation->getFlight()->getDestinationAirport()->getId(),
-                'departure_time' => $reservation->getFlight()->getDepartureTime()->format(DATE_ATOM),
-                'arrival_time' => $reservation->getFlight()->getArrivalTime()->format(DATE_ATOM),
-            ],
-        ], 201);
-    }
-
     #[Route('', methods: ['GET'])]
     public function index(Request $request): JsonResponse
     {
