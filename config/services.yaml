@@ -57,6 +57,11 @@ services:
             $entityManager: '@doctrine.orm.entity_manager'
             $validator: '@validator'
             $objectMapper: '@object_mapper'
+    App\Controller\ReservationPassenger\GetReservationPassengerController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
     App\Repository\AirportRepository:
         arguments:
             $registry: '@doctrine'
