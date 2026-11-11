@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Passenger;
+use App\Entity\Reservation;
+use App\Entity\ReservationPassenger;
+use App\Entity\Seat;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\ObjectMapper\ObjectMapperInterface;
@@ -50,7 +54,7 @@ abstract class AbstractController {
      * @return JsonResponse The JSON response containing the provided data.
      */
     protected function successResponse(
-        array $data,
+        ?array $data,
         int $status = 200
     ): JsonResponse {
         return new JsonResponse($data, $status);
@@ -79,5 +83,69 @@ abstract class AbstractController {
         }
 
         return new JsonResponse($response, $status);
+    }
+
+    /**
+     * Returns true if seat is taken
+     *
+     * @param Seat $seat The seat to be checked.
+     *
+     * @return boolean Returns `true` if already taken. 
+     */
+    public function isTaken(Seat $seat): bool
+    {
+        $reservationPassengerRepository = $this->entityManager->getRepository(ReservationPassenger::class);
+
+        return $reservationPassengerRepository->isTaken($seat);
+    }
+
+    /**
+     * Adds passenger to an existing reservation
+     *
+     * @param Reservation $reservation The reservation of the passengers.
+     * @param array $passengers The passengers of the flight reservation
+     *
+     * @return JsonResponse The JSON response containing the error information.
+     */
+    public function addReservationPassenger(Reservation $reservation, array $passengers): ?JsonResponse {
+        $passengerRepository = $this->entityManager->getRepository(Passenger::class);
+        $seatRepository = $this->entityManager->getRepository(Seat::class);
+
+        foreach ($passengers as $passenger) {
+            $reservationPassenger = new ReservationPassenger();
+
+            $foundPassenger = $passengerRepository->find($passenger['passenger_id']);
+            $foundSeat = $seatRepository->find($passenger['seat_id']);
+
+            if (!$foundPassenger) {
+                return $this->errorResponse(
+                    'Unknown passenger.',
+                    404
+                );
+            }
+
+            if (!$foundSeat) {
+                return $this->errorResponse(
+                    'Unknown seat.',
+                    404
+                );
+            }
+
+            if ($this->isTaken($foundSeat)) {
+                return $this->errorResponse(
+                    'Seat already taken.',
+                    409
+                );
+            }
+
+            $reservationPassenger->setPassenger($foundPassenger);
+            $reservationPassenger->setSeat($foundSeat);
+
+            $reservation->addReservationPassenger($reservationPassenger);
+
+            $this->entityManager->persist($reservationPassenger);
+        }
+
+        return null;
     }
 }
