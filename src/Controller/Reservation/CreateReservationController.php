@@ -6,17 +6,13 @@ use App\Controller\AbstractController;
 use App\Dto\Reservation\CreateReservationDto;
 use App\Dto\ReservationPassenger\CreateReservationPassengerDto;
 use App\Entity\Flight;
-use App\Entity\Passenger;
 use App\Entity\Reservation;
-use App\Entity\ReservationPassenger;
-use App\Entity\Seat;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/api/reservations')]
 class CreateReservationController extends AbstractController
 {
-    #[Route('', methods: ['POST'])]
+    #[Route('/api/reservations', methods: ['POST'])]
     public function __invoke(Request $request)
     {
         $data = json_decode($request->getContent(), true);
@@ -58,7 +54,7 @@ class CreateReservationController extends AbstractController
         
         $flight = $flightRepository->find($dto->flightId);
 
-        if (!$flight) {
+        if ($flight === null) {
             return $this->errorResponse(
                 'Flight not found.',
                 404
@@ -70,7 +66,7 @@ class CreateReservationController extends AbstractController
 
         $response = $this->addReservationPassenger($reservation, $passengers);
 
-        if ($response) {
+        if ($response !== null) {
             return $response;
         }
 

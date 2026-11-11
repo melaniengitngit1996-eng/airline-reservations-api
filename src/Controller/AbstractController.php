@@ -117,21 +117,21 @@ abstract class AbstractController {
             $foundPassenger = $passengerRepository->find($passenger['passenger_id']);
             $foundSeat = $seatRepository->find($passenger['seat_id']);
 
-            if (!$foundPassenger) {
+            if ($foundPassenger === null) {
                 return $this->errorResponse(
                     'Unknown passenger.',
                     404
                 );
             }
 
-            if (!$foundSeat) {
+            if ($foundSeat === null) {
                 return $this->errorResponse(
                     'Unknown seat.',
                     404
                 );
             }
 
-            if ($this->isTaken($foundSeat)) {
+            if ($this->isTaken($foundSeat) === true) {
                 return $this->errorResponse(
                     'Seat already taken.',
                     409
