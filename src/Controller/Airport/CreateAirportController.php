@@ -5,18 +5,13 @@ namespace App\Controller\Airport;
 use App\Controller\AbstractController;
 use App\Dto\Airport\CreateAirportDto;
 use App\Entity\Airport;
-use App\Repository\AirportRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\ObjectMapper\ObjectMapperInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Controller for creating a new airport.
  */
-#[Route('/api/airports')]
 class CreateAirportController extends AbstractController
 {
     /**
@@ -26,7 +21,7 @@ class CreateAirportController extends AbstractController
      *
      * @return JsonResponse The created airport or a validation error response.
      */
-    #[Route('', methods: ['POST'])]
+    #[Route('/api/airports', methods: ['POST'])]
     public function __invoke(Request $request)
     {
         $data = json_decode($request->getContent(), true);

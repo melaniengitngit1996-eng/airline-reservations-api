@@ -91,7 +91,7 @@ class CreateFlightController {
             $arrivalAirport = $this->airportRepository->find($data['arrival_airport_id']);
         }
 
-        if (!$arrivalAirport) {
+        if ($arrivalAirport) {
             return new JsonResponse([
                 'message' => 'Airport not found.'
             ], 404);
