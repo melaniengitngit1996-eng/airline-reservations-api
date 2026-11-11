@@ -63,12 +63,12 @@ class CreateReservationPassengerController extends AbstractController {
             'passengers' => array_map(
                 function ($reservationPassenger) {
                     return [
-                        'passenger_id' => $reservationPassenger->getPassenger()->getId(),
+                        'id' => $reservationPassenger->getPassenger()->getId(),
                         'first_name' => $reservationPassenger->getPassenger()->getFirstName(),
                         'last_name' => $reservationPassenger->getPassenger()->getLastName(),
                         'email' => $reservationPassenger->getPassenger()->getEmail(),
                         'seat' => [
-                            'seat_id' => $reservationPassenger->getSeat()->getId(),
+                            'id' => $reservationPassenger->getSeat()->getId(),
                             'code' => $reservationPassenger->getSeat()->getCode(),
                         ],
                     ];
