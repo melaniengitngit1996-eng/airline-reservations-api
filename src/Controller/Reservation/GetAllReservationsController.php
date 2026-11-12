@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Reservation;
 
-use App\Service\ReservationServiceInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Controller\AbstractController;
+use App\Entity\Reservation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/api/reservations')]
-class ReservationController {
-    public function __construct(private ReservationServiceInterface $reservationService) {}
-
-    #[Route('', methods: ['GET'])]
-    public function index(Request $request): JsonResponse
+class GetAllReservationsController extends AbstractController {
+    #[Route('/api/reservations', methods: ['GET'])]
+    public function __invoke(Request $request)
     {
-        $flightId = $request->query->get('flight_id');
+        $reservationRespository = $this->entityManager->getRepository(Reservation::class);
 
-        $reservations = $this->reservationService->findAll(
-            $flightId !== null ? (int) $flightId : null
-        );
+        $data = json_decode($request->getContent(), true);
 
-        return new JsonResponse(array_map(
+        if (isset($data['flight_id']) === true)
+            $reservations = $reservationRespository->findByFlightId($data['flight_id']);
+        else
+            $reservations = $reservationRespository->findAll();
+
+        return $this->successResponse(array_map(
             fn ($reservation) => [
                 'reservation_id' => $reservation->getId(),
 
@@ -44,6 +44,6 @@ class ReservationController {
                 ),
             ],
             $reservations
-        ));
+        ), 200);
     }
 }
