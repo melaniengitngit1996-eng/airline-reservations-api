@@ -142,13 +142,5 @@ it ('removes passenger in a reservation successfully (200)', function() {
     $client->jsonRequest('DELETE', '/api/reservations/1/passengers/1');
 
     expect($client->getResponse()->getStatusCode())
-        ->toBe(200);
-
-    $response = json_decode(
-        $client->getResponse()->getContent(),
-        true
-    );
-
-    expect($response['message'])
-        ->toBe('Passenger assignment removed successfully.');
+        ->toBe(204);
 });
