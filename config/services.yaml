@@ -42,6 +42,26 @@ services:
             $entityManager: '@doctrine.orm.entity_manager'
             $validator: '@validator'
             $objectMapper: '@object_mapper'
+    App\Controller\ReservationPassenger\CreateReservationPassengerController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\ReservationPassenger\DeleteReservationPassengerController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\ReservationPassenger\UpdateReservationPassengerController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\ReservationPassenger\GetReservationPassengerController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
     App\Repository\AirportRepository:
         arguments:
             $registry: '@doctrine'
