@@ -8,9 +8,7 @@ use Symfony\Component\ObjectMapper\Attribute\Map;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Data transfer object for creating a passenger.
- *
- * Maps the incoming passenger data to the Passenger entity.
+ * Data required to create a passenger.
  */
 class CreatePassengerDto
 {
