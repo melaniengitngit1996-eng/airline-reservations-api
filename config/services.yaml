@@ -52,7 +52,7 @@ services:
             $entityManager: '@doctrine.orm.entity_manager'
             $validator: '@validator'
             $objectMapper: '@object_mapper'
-    App\Controller\Reservation\GetAllReservationController:
+    App\Controller\Reservation\GetAllReservationsController:
         arguments:
             $entityManager: '@doctrine.orm.entity_manager'
             $validator: '@validator'
