@@ -1,22 +1,12 @@
 <?php
 
-it('creates a passenger successfully (201)', function () {
+it('has create passenger API endpoint', function () {
     $client = $this->createClient();
-    $client->jsonRequest('POST', '/api/passengers', [
-            'first_name' => 'Juan',
-            'last_name' => 'Dela Cruz',
-            'email' => 'some@email.com',
-        ]);
+
+    $client->jsonRequest('POST', '/api/passengers', []);
 
     expect($client->getResponse()->getStatusCode())
-        ->toBe(201);
-
-    $response = json_decode(
-        $client->getResponse()->getContent(),
-        true
-    );
-
-    expect($response['first_name'])->toBe('Juan');
+        ->not->toBe(404);
 });
 
 it('creates a passenger with blank fields (400)', function () {
@@ -92,4 +82,23 @@ it('creates a passenger with invalid email address (400)', function () {
 
     expect($response['message'])
         ->toBe('Invalid email address.');
+});
+
+it('creates a passenger successfully (201)', function () {
+    $client = $this->createClient();
+    $client->jsonRequest('POST', '/api/passengers', [
+            'first_name' => 'Juan',
+            'last_name' => 'Dela Cruz',
+            'email' => 'some@email.com',
+        ]);
+
+    expect($client->getResponse()->getStatusCode())
+        ->toBe(201);
+
+    $response = json_decode(
+        $client->getResponse()->getContent(),
+        true
+    );
+
+    expect($response['first_name'])->toBe('Juan');
 });

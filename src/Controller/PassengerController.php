@@ -47,45 +47,4 @@ class PassengerController
             'email' => $passenger->getEmail(),
         ]);
     }
-
-    #[Route('/{id}', methods: ['PATCH'])]
-    public function update(int $id, Request $request): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
-
-        $requiredFields = ['first_name', 'last_name', 'email'];
-
-        foreach ($requiredFields as $field) {
-            if (empty($data[$field])) {
-                return new JsonResponse([
-                    'message' => "Required fields are missing."
-                ], 400);
-            }
-        }
-
-        $passenger = $this->passengerService->update($id, $data);
-
-        if (!$passenger) {
-            return new JsonResponse([
-                'message' => 'Passenger not found'
-            ], 404);
-        }
-
-        return new JsonResponse([
-            'id' => $passenger->getId(),
-            'first_name' => $passenger->getFirstName(),
-            'last_name' => $passenger->getLastName(),
-            'email' => $passenger->getEmail(),
-        ]);
-    }
-
-    #[Route('/{id}', methods: ['DELETE'])]
-    public function delete(int $id): JsonResponse
-    {
-        if (!$this->passengerService->delete($id)) {
-            return new JsonResponse(['message' => 'Passenger not found'], 404);
-        }
-
-        return new JsonResponse(null, 204);
-    }
 }
