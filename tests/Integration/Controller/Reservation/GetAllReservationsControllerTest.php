@@ -103,9 +103,10 @@ it('gets all reservations with flight_id filter', function () {
         )
     );
 
-    $client->jsonRequest('GET', '/api/reservations', [
-        'flight_id' => 1,
-    ]);
+    $client->request(
+        'GET',
+        '/api/reservations?flight_id=1'
+    );
 
     expect($client->getResponse()->getStatusCode())
         ->toBe(200);
