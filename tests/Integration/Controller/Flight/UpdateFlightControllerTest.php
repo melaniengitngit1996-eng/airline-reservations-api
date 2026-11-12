@@ -8,6 +8,7 @@ use App\Repository\FlightRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\ObjectMapper\ObjectMapperInterface;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -208,6 +209,7 @@ it('updates a flight with an existing flight number (409)', function () {
     $client = $this->createClient();
 
     $entityManager = $this->createMock(EntityManagerInterface::class);
+    $validator = $this->createMock(ValidatorInterface::class);
     $objectMapper = $this->createMock(ObjectMapperInterface::class);
 
     $airport = new Airport();
@@ -236,11 +238,25 @@ it('updates a flight with an existing flight number (409)', function () {
         ->with(1)
         ->willReturn($flight);
 
+    $flightRepository
+        ->expects($this->once())
+        ->method('findOneBy')
+        ->with([
+            'flightNumber' => 'PR101',
+        ])
+        ->willReturn($existingFlight);
+
     $entityManager
         ->method('getRepository')
         ->willReturn($flightRepository);
 
-    $validator = static::getContainer()->get(ValidatorInterface::class);
+    $validator
+        ->method('validate')
+        ->willReturn(new ConstraintViolationList());
+
+    $entityManager
+        ->expects($this->never())
+        ->method('flush');
 
     static::getContainer()->set(
         UpdateFlightController::class,
@@ -266,6 +282,7 @@ it('updates a flight with an existing flight number (409)', function () {
     expect($response['message'])
         ->toBe('Flight number already exists.');
 });
+
 it('updates flight successfully (200)', function () {
     $client = $this->createClient();
 

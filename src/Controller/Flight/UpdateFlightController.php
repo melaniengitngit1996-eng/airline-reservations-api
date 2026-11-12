@@ -3,7 +3,6 @@
 namespace App\Controller\Flight;
 
 use App\Controller\AbstractController;
-use App\Dto\Flight\UpdateFlightDto;
 use App\Entity\Airport;
 use App\Entity\Flight;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,7 +34,9 @@ class UpdateFlightController extends AbstractController
             );
         }
 
-        $flightRepository = $this->entityManager->getRepository(Flight::class);
+        $flightRepository = $this->entityManager->getRepository(
+            Flight::class
+        );
 
         $flight = $flightRepository->find($flightId);
 
@@ -46,7 +47,9 @@ class UpdateFlightController extends AbstractController
             );
         }
 
-        $airportRepository = $this->entityManager->getRepository(Airport::class);
+        $airportRepository = $this->entityManager->getRepository(
+            Airport::class
+        );
 
         $departureAirport = null;
 
@@ -83,6 +86,17 @@ class UpdateFlightController extends AbstractController
         }
 
         if (isset($data['flight_number'])) {
+            $existingFlight = $flightRepository->findOneBy([
+                'flightNumber' => $data['flight_number'],
+            ]);
+
+            if ($existingFlight !== null && $existingFlight !== $flight) {
+                return $this->errorResponse(
+                    'Flight number already exists.',
+                    409
+                );
+            }
+
             $flight->setFlightNumber($data['flight_number']);
         }
 
@@ -131,8 +145,12 @@ class UpdateFlightController extends AbstractController
                 'city' => $flight->getDestinationAirport()->getCity(),
                 'country' => $flight->getDestinationAirport()->getCountry(),
             ],
-            'departure_time' => $flight->getDepartureTime()->format('Y-m-d H:i:s.u'),
-            'arrival_time' => $flight->getArrivalTime()->format('Y-m-d H:i:s.u'),
+            'departure_time' => $flight->getDepartureTime()->format(
+                'Y-m-d H:i:s.u'
+            ),
+            'arrival_time' => $flight->getArrivalTime()->format(
+                'Y-m-d H:i:s.u'
+            ),
             'capacity' => $flight->getCapacity(),
         ], 200);
     }
