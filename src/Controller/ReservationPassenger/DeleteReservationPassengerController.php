@@ -6,8 +6,22 @@ use App\Controller\AbstractController;
 use App\Entity\Reservation;
 use App\Entity\ReservationPassenger;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-class DeleteReservationPassengerController extends AbstractController {
+/**
+ * 
+ * Controller for removing a passenger assignment from an existing reservation.
+ */
+class DeleteReservationPassengerController extends AbstractController
+{
+    /**
+     * Removes a passenger assignment from a reservation.
+     *
+     * @param int $reservationId The ID of the reservation.
+     * @param int $passengerId   The ID of the passenger assignment.
+     *
+     * @return JsonResponse The successful response or an error response.
+     */
     #[Route('/api/reservations/{reservationId}/passengers/{passengerId}', methods: ['DELETE'])]
     public function __invoke(int $reservationId, int $passengerId)
     {
@@ -23,7 +37,7 @@ class DeleteReservationPassengerController extends AbstractController {
 
         $reservationPassengerRepository = $this->entityManager->getRepository(ReservationPassenger::class);
         $reservationPassenger = $reservationPassengerRepository->find($passengerId);
-        
+
         if ($reservationPassenger === null) {
             return $this->errorResponse(
                 'Passenger not found.',

@@ -4,10 +4,21 @@ namespace App\Controller\ReservationPassenger;
 
 use App\Controller\AbstractController;
 use App\Entity\Reservation;
-use App\Entity\ReservationPassenger;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-class GetReservationPassengerController extends AbstractController {
+/**
+ * Controller for retrieving passengers assigned to a reservation.
+ */
+class GetReservationPassengerController extends AbstractController
+{
+    /**
+     * Retrieves all passenger assignments for a reservation.
+     *
+     * @param int $reservationId The ID of the reservation.
+     *
+     * @return JsonResponse The list of all the passengers associated in the reservation or an error response.
+     */
     #[Route('/api/reservations/{reservationId}/passengers', methods: ['GET'])]
     public function __invoke(int $reservationId)
     {

@@ -7,8 +7,21 @@ use App\Dto\ReservationPassenger\CreateReservationPassengerDto;
 use App\Entity\Reservation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-class CreateReservationPassengerController extends AbstractController {
+/**
+ * Controller for adding passengers to an existing reservation.
+ */
+class CreateReservationPassengerController extends AbstractController
+{
+    /**
+     * Adds one or more passengers to an existing reservation.
+     *
+     * @param int     $reservationId The ID of the reservation.
+     * @param Request $request       The HTTP request containing passenger data.
+     *
+     * @return JsonResponse The list of all the passengers associated in the reservation or an error response.
+     */
     #[Route('/api/reservations/{reservationId}/passengers', methods: ['POST'])]
     public function __invoke($reservationId, Request $request)
     {
@@ -22,7 +35,7 @@ class CreateReservationPassengerController extends AbstractController {
                 404
             );
         }
-    
+
         foreach ($passengers as $passenger) {
             $passengerDto = new CreateReservationPassengerDto();
 

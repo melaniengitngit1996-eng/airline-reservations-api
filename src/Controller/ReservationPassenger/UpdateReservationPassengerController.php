@@ -8,8 +8,22 @@ use App\Entity\ReservationPassenger;
 use App\Entity\Seat;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-class UpdateReservationPassengerController extends AbstractController {
+/**
+ * Controller for updating a passenger assignment in a reservation.
+ */
+class UpdateReservationPassengerController extends AbstractController
+{
+    /**
+     * Updates the seat assigned to a passenger in a reservation.
+     *
+     * @param int     $reservationId The ID of the reservation.
+     * @param int     $passengerId   The ID of the passenger assignment.
+     * @param Request $request       The HTTP request containing the new seat ID.
+     *
+     * @return JsonResponse The updated passenger an error response.
+     */
     #[Route('/api/reservations/{reservationId}/passengers/{passengerId}', methods: ['PATCH'])]
     public function __invoke(int $reservationId, int $passengerId, Request $request)
     {
@@ -25,7 +39,7 @@ class UpdateReservationPassengerController extends AbstractController {
 
         $reservationPassengerRepository = $this->entityManager->getRepository(ReservationPassenger::class);
         $reservationPassenger = $reservationPassengerRepository->find($passengerId);
-        
+
         if ($reservationPassenger === null) {
             return $this->errorResponse(
                 'Passenger not found.',
@@ -74,6 +88,6 @@ class UpdateReservationPassengerController extends AbstractController {
                 'id' => $reservationPassenger->getSeat()->getId(),
                 'code' => $reservationPassenger->getSeat()->getCode(),
             ],
-        ], 200) ;
+        ], 200);
     }
-}  
+}
