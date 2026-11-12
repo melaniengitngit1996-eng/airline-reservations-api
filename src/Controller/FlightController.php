@@ -72,14 +72,4 @@ class FlightController {
             'capacity' => $flight->getCapacity(),
         ]);
     }
-
-    #[Route('/{id}', methods: ['DELETE'])]
-    public function delete(int $id): JsonResponse
-    {
-        if (!$this->flightService->delete($id)) {
-            return new JsonResponse(['message' => 'Flight not found'], 404);
-        }
-
-        return new JsonResponse(null, 204);
-    }
 }
