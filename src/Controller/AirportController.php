@@ -49,14 +49,4 @@ class AirportController
             'country' => $airport->getCountry(),
         ]);
     }
-
-    #[Route('/{id}', methods: ['DELETE'])]
-    public function delete(int $id): JsonResponse
-    {
-        if (!$this->airportService->delete($id)) {
-            return new JsonResponse(['message' => 'Airport not found'], 404);
-        }
-
-        return new JsonResponse(null, 204);
-    }
 }
