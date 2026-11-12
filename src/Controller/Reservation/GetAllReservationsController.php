@@ -11,21 +11,26 @@ class GetAllReservationsController extends AbstractController {
     #[Route('/api/reservations', methods: ['GET'])]
     public function __invoke(Request $request)
     {
-        $reservationRespository = $this->entityManager->getRepository(Reservation::class);
+        $reservationRepository = $this->entityManager->getRepository(Reservation::class);
 
         $data = json_decode($request->getContent(), true);
 
-        if (isset($data['flight_id']) === true)
-            $reservations = $reservationRespository->findByFlightId($data['flight_id']);
-        else
-            $reservations = $reservationRespository->findAll();
+        $flightId = $request->query->get('flight_id');
+
+        if ($flightId !== null) {
+            $reservations = $reservationRepository->findByFlightId(
+                (int) $flightId
+            );
+        } else {
+            $reservations = $reservationRepository->findAll();
+        }
 
         return $this->successResponse(array_map(
             fn ($reservation) => [
                 'reservation_id' => $reservation->getId(),
 
                 'flight' => [
-                    'flight_id' => $reservation->getFlight()->getId(),
+                    'id' => $reservation->getFlight()->getId(),
                     'flight_number' => $reservation->getFlight()->getFlightNumber(),
                     'departure_airport_id' => $reservation->getFlight()->getOriginAirport()->getId(),
                     'arrival_airport_id' => $reservation->getFlight()->getDestinationAirport()->getId(),
@@ -35,7 +40,7 @@ class GetAllReservationsController extends AbstractController {
 
                 'passengers' => array_map(
                     fn ($reservationPassenger) => [
-                        'passenger_id' => $reservationPassenger->getPassenger()->getId(),
+                        'id' => $reservationPassenger->getPassenger()->getId(),
                         'first_name' => $reservationPassenger->getPassenger()->getFirstName(),
                         'last_name' => $reservationPassenger->getPassenger()->getLastName(),
                         'email' => $reservationPassenger->getPassenger()->getEmail(),

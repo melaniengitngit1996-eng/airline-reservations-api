@@ -24,7 +24,7 @@ class GetReservationController extends AbstractController {
         return $this->successResponse([
             'id' => $reservation->getId(),
             'flight' => [
-                'flight_id' => $reservation->getFlight()->getId(),
+                'id' => $reservation->getFlight()->getId(),
                 'flight_number' => $reservation->getFlight()->getFlightNumber(),
                 'departure_airport_id' => $reservation->getFlight()->getOriginAirport()->getId(),
                 'arrival_airport_id' => $reservation->getFlight()->getDestinationAirport()->getId(),
@@ -35,7 +35,7 @@ class GetReservationController extends AbstractController {
             'passengers' => array_map(
                 function ($reservationPassenger) {
                     return [
-                        'passenger_id' => $reservationPassenger->getPassenger()->getId(),
+                        'id' => $reservationPassenger->getPassenger()->getId(),
                         'first_name' => $reservationPassenger->getPassenger()->getFirstName(),
                         'last_name' => $reservationPassenger->getPassenger()->getLastName(),
                         'email' => $reservationPassenger->getPassenger()->getEmail(),
