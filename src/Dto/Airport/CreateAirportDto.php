@@ -18,7 +18,7 @@ class CreateAirportDto
     /**
      * The airport's code.
      */
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Required fields are missing.')]
     #[Assert\Length(exactly: 3)]
     #[Map(target: 'code')]
     public string $code;
@@ -26,36 +26,21 @@ class CreateAirportDto
     /**
      * The airport's name.
      */
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Required fields are missing.')]
     #[Map(target: 'name')]
     public string $name;
 
     /**
      * The city where the airport is located.
      */
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Required fields are missing.')]
     #[Map(target: 'city')]
     public string $city;
 
     /**
      * The country where the airport is located.
      */
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Required fields are missing.')]
     #[Map(target: 'country')]
     public string $country;
-
-    /**
-     * Creates a new CreateAirportDto instance.
-     *
-     * @param Request $request The HTTP request containing the airport data.
-     */
-    public function __construct(Request $request)
-    {
-        $data = json_decode($request->getContent(), true);
-        
-        $this->code = $data['code'] ?? '';
-        $this->name = $data['name'] ?? '';
-        $this->city = $data['city'] ?? '';
-        $this->country = $data['country'] ?? '';
-    }
 }
