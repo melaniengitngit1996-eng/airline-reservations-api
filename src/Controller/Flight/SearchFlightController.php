@@ -64,7 +64,7 @@ class SearchFlightController extends AbstractController {
 
         return $this->successResponse(array_map(
             fn ($flight) => [
-                'flight_id' => $flight->getId(),
+                'id' => $flight->getId(),
                 'flight_number' => $flight->getFlightNumber(),
                 'departure_airport' => [
                     'id' => $flight->getOriginAirport()->getId(),
