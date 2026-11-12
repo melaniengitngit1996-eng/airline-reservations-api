@@ -35,10 +35,11 @@ class CreateAirportController extends AbstractController
         $errors = $this->validator->validate($dto);
         
         if (count($errors) > 0) {
-            return new JsonResponse([
-                'message' => $errors[0]->getMessage(),
-                'errors' => (string) $errors,
-            ], 400);
+            return $this->errorResponse(
+                $errors[0]->getMessage(),
+                400,
+                (string) $errors
+            );
         }
 
         $airport = $this->objectMapper->map($dto, Airport::class);
@@ -46,16 +47,17 @@ class CreateAirportController extends AbstractController
         $errors = $this->validator->validate($airport);
 
         if (count($errors) > 0) {
-            return new JsonResponse([
-                'message' => $errors[0]->getMessage(),
-                'errors' => (string) $errors,
-            ], 409);
+            return $this->errorResponse(
+                $errors[0]->getMessage(),
+                409,
+                (string) $errors
+            );
         }
 
         $this->entityManager->persist($airport);
         $this->entityManager->flush();
 
-        return new JsonResponse([
+        return $this->successResponse([
             'id' => $airport->getId(),
             'code' => $airport->getCode(),
             'name' => $airport->getName(),
