@@ -24,9 +24,7 @@ class CreateFlightController extends AbstractController {
         $data = json_decode($request->getContent(), true);
         
         if (empty($data)) {
-            return new JsonResponse([
-                'message' => 'Required fields are missing.'
-            ], 400);
+            return $this->errorResponse('Required fields are missing.', 400);
         }
 
         $airportRepository = $this->entityManager->getRepository(Airport::class);
@@ -38,9 +36,7 @@ class CreateFlightController extends AbstractController {
         }
 
         if ($departureAirport === null) {
-            return new JsonResponse([
-                'message' => 'Airport not found.'
-            ], 404);
+            return $this->errorResponse('Airport not found.', 404);
         }
 
         $arrivalAirport = null;
@@ -50,9 +46,7 @@ class CreateFlightController extends AbstractController {
         }
 
         if ($arrivalAirport === null) {
-            return new JsonResponse([
-                'message' => 'Airport not found.'
-            ], 404);
+            return $this->errorResponse('Airport not found.', 404);
         }
 
         $dto = new CreateFlightDto();
@@ -67,10 +61,11 @@ class CreateFlightController extends AbstractController {
         $errors = $this->validator->validate($dto);
 
         if (count($errors) > 0) {
-            return new JsonResponse([
-                'message' => $errors[0]->getMessage(),
-                'errors' => (string) $errors,
-            ], 400);
+            return $this->errorResponse(
+                $errors[0]->getMessage(), 
+                400,
+                (string) $errors
+            );
         }
 
         $flight = $this->objectMapper->map($dto, Flight::class);
@@ -78,23 +73,36 @@ class CreateFlightController extends AbstractController {
         $errors = $this->validator->validate($flight);
         
         if (count($errors) > 0) {
-            return new JsonResponse([
-                'message' => $errors[0]->getMessage(),
-                'errors' => (string) $errors,
-            ], 409);
+            return $this->errorResponse(
+                $errors[0]->getMessage(), 
+                409,
+                (string) $errors
+            );
         }
 
         $this->entityManager->persist($flight);
         $this->entityManager->flush();
 
-        return new JsonResponse([
+        return $this->successResponse([
             'id' => $flight->getId(),
             'flight_number' => $flight->getFlightNumber(),
-            'departure_airport_id' => $flight->getOriginAirport()->getId(),
-            'arrival_airport_id' => $flight->getDestinationAirport()->getId(),
-            'departure_time' => $flight->getDepartureTime(),
-            'arrival_time' => $flight->getArrivalTime(),
-            'capacity' => $flight->getCapacity()
-        ],201);
+            'departure_airport' => [
+                'id' => $flight->getOriginAirport()->getId(),
+                'code' => $flight->getOriginAirport()->getCode(),
+                'name' => $flight->getOriginAirport()->getName(),
+                'city' => $flight->getOriginAirport()->getCity(),
+                'country' => $flight->getOriginAirport()->getCountry()
+            ],
+            'arrival_airport' => [
+                'id' => $flight->getDestinationAirport()->getId(),
+                'code' => $flight->getDestinationAirport()->getCode(),
+                'name' => $flight->getDestinationAirport()->getName(),
+                'city' => $flight->getDestinationAirport()->getCity(),
+                'country' => $flight->getDestinationAirport()->getCountry()
+            ],
+            'departure_time' => $flight->getDepartureTime()->format('Y-m-d H:i:s.u'),
+            'arrival_time' => $flight->getArrivalTime()->format('Y-m-d H:i:s.u'),
+            'capacity' => $flight->getCapacity(),
+        ], 201);
     }
 }

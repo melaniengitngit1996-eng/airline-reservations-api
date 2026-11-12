@@ -197,27 +197,46 @@ it('creates a flight with an existing flight number (409)', function () {
 
 it('create flights successfully (201)', function () {
     $client = $this->createClient();
-    $airport = new Airport();
-    $flight = new Flight();
 
-    $airportRepository = $this->createMock(AirportRepository::class);
-    $airportRepository->expects($this->exactly(2))->method('find')->willReturn($airport);
-    
-    $entityManager = $this->createMock(EntityManagerInterface::class);
-    $entityManager->method('getRepository')->willReturn($airportRepository);
-
-    $validator = $this->createMock(ValidatorInterface::class);
-    $validator->expects($this->exactly(2))->method('validate')->willReturn(new ConstraintViolationList());
+    $airport = $this->createMock(Airport::class);
+    $airport->method('getId')->willReturn(1);
+    $airport->method('getCode')->willReturn('MNL');
+    $airport->method('getName')->willReturn('Manila');
+    $airport->method('getCity')->willReturn('Manila');
+    $airport->method('getCountry')->willReturn('Philippines');
 
     $flight = $this->createMock(Flight::class);
-
-    $flight->expects($this->once())->method('getOriginAirport')->willReturn($airport);
-    $flight->expects($this->once())->method('getDestinationAirport')->willReturn($airport);
-
+    $flight->method('getId')->willReturn(1);
     $flight->method('getFlightNumber')->willReturn('PR101');
+    $flight->method('getOriginAirport')->willReturn($airport);
+    $flight->method('getDestinationAirport')->willReturn($airport);
+    $flight->method('getDepartureTime')->willReturn(
+        new DateTimeImmutable('2026-12-15T08:00:00+08:00')
+    );
+    $flight->method('getArrivalTime')->willReturn(
+        new DateTimeImmutable('2026-12-15T09:30:00+08:00')
+    );
+    $flight->method('getCapacity')->willReturn(5);
+
+    $airportRepository = $this->createMock(AirportRepository::class);
+    $airportRepository
+        ->method('find')
+        ->willReturn($airport);
+
+    $entityManager = $this->createMock(EntityManagerInterface::class);
+    $entityManager
+        ->method('getRepository')
+        ->willReturn($airportRepository);
+
+    $validator = $this->createMock(ValidatorInterface::class);
+    $validator
+        ->method('validate')
+        ->willReturn(new ConstraintViolationList());
 
     $objectMapper = $this->createMock(ObjectMapperInterface::class);
-    $objectMapper->method('map')->willReturn($flight);
+    $objectMapper
+        ->method('map')
+        ->willReturn($flight);
 
     static::getContainer()->set(
         CreateFlightController::class,
@@ -234,15 +253,17 @@ it('create flights successfully (201)', function () {
         'arrival_airport_id' => 1,
         'departure_time' => '2026-12-15T08:00:00+08:00',
         'arrival_time' => '2026-12-15T09:30:00+08:00',
-        'capacity' => 5
+        'capacity' => 5,
     ]);
 
-    expect($client->getResponse()->getStatusCode())->toBe(201);
-    
+    expect($client->getResponse()->getStatusCode())
+        ->toBe(201);
+
     $response = json_decode(
         $client->getResponse()->getContent(),
         true
     );
 
-    expect($response['flight_number'])->toBe('PR101');
+    expect($response['flight_number'])
+        ->toBe('PR101');
 });
