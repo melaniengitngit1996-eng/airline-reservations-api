@@ -47,14 +47,4 @@ class PassengerController
             'email' => $passenger->getEmail(),
         ]);
     }
-
-    #[Route('/{id}', methods: ['DELETE'])]
-    public function delete(int $id): JsonResponse
-    {
-        if (!$this->passengerService->delete($id)) {
-            return new JsonResponse(['message' => 'Passenger not found'], 404);
-        }
-
-        return new JsonResponse(null, 204);
-    }
 }
