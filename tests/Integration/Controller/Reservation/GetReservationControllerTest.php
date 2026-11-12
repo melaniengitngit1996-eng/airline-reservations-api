@@ -78,7 +78,7 @@ it('has get reservation API endpoint.', function () {
 it('gets unknown reservation (404).', function () {
     $client = $this->createClient();
 
-    $client->jsonRequest('GET', '/api/reservations/1');
+    $client->jsonRequest('GET', '/api/reservations/100');
 
     expect($client->getResponse()->getStatusCode())
         ->toBe(404);
