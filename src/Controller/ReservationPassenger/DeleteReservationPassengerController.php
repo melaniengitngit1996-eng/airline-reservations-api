@@ -49,8 +49,6 @@ class DeleteReservationPassengerController extends AbstractController
 
         $this->entityManager->flush();
 
-        return $this->successResponse([
-            'message' => 'Passenger assignment removed successfully.'
-        ], 200);
+        return $this->successResponse([], 204);
     }
 }
