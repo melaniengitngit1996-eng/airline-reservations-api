@@ -31,22 +31,4 @@ class AirportController
             $airports
         ));
     }
-
-    #[Route('/{id}', methods: ['GET'])]
-    public function show(int $id): JsonResponse
-    {
-        $airport = $this->airportService->find($id);
-
-        if (!$airport) {
-            return new JsonResponse(['message' => 'Airport not found'], 404);
-        }
-
-        return new JsonResponse([
-            'airport_id' => $airport->getId(),
-            'code' => $airport->getCode(),
-            'name' => $airport->getName(),
-            'city' => $airport->getCity(),
-            'country' => $airport->getCountry(),
-        ]);
-    }
 }
