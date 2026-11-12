@@ -3,9 +3,7 @@
 namespace App\Dto\Flight;
 
 use App\Entity\Airport;
-use App\Entity\Flight;
 use DateTimeImmutable;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\ObjectMapper\Attribute\Map;
 use Symfony\Component\Validator\Constraints as Assert;
 

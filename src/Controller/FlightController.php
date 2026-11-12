@@ -11,25 +11,6 @@ use Symfony\Component\Routing\Attribute\Route;
 class FlightController {
     public function __construct(private FlightServiceInterface $flightService) {}
 
-    #[Route('', methods: ['GET'])]
-    public function index(): JsonResponse
-    {
-        $flights = $this->flightService->findAll();
-
-        return new JsonResponse(array_map(
-            fn ($flight) => [
-                'flight_id' => $flight->getId(),
-                'flight_number' => $flight->getFlightNumber(),
-                'departure_airport_id' => $flight->getDestinationAirport()->getId(),
-                'arrival_airport_id' => $flight->getDestinationAirport()->getId(),
-                'departure_time' => $flight->getDepartureTime()->format('Y-m-d H:i:s.u'),
-                'arrival_time' => $flight->getArrivalTime()->format('Y-m-d H:i:s.u'),
-                'capacity' => $flight->getCapacity(),
-            ],
-            $flights
-        ));
-    }
-
     #[Route('/{id}', methods: ['GET'])]
     public function show(int $id): JsonResponse
     {
