@@ -32,6 +32,11 @@ services:
             $entityManager: '@doctrine.orm.entity_manager'
             $validator: '@validator'
             $objectMapper: '@object_mapper'
+    App\Controller\Airport\UpdateAirportController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
     App\Controller\Seat\CreateSeatController:
         arguments:
             $entityManager: '@doctrine.orm.entity_manager'
