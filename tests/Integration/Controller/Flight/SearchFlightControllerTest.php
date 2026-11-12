@@ -169,6 +169,27 @@ it('searches all flights with past departure date (400)', function() {
         ->toBe('Departure date cannot be in the past.');
 });
 
+it('searches all flights with invalid departure date (400)', function() {
+    $client = $this->createClient();
+
+    $client->jsonRequest('GET', '/api/flights', [
+        'origin' => 1,
+        'destination' => 2,
+        'departure_date' => '00-11-10'
+    ]);
+
+    expect($client->getResponse()->getStatusCode())
+        ->toBe(400);
+
+    $response = json_decode(
+        $client->getResponse()->getContent(),
+        true
+    );
+
+    expect($response['message'])
+        ->toBe('Invalid departure date.');
+});
+
 it('searches flight successfully (400)', function() {
     $client = $this->createClient();
 

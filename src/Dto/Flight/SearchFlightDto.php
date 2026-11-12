@@ -33,11 +33,25 @@ class SearchFlightDto {
         return new DateTimeImmutable($value);
     }
 
-    public static function validateDepartureDate(
-        string $value,
-        ExecutionContextInterface $context
-    ): void {
-        $departureDate = DateTimeImmutable::createFromFormat('Y-m-d', $value);
+    public static function validateDepartureDate(string $value, ExecutionContextInterface $context) {
+        $departureDate = DateTimeImmutable::createFromFormat('!Y-m-d', $value);
+
+        $errors = DateTimeImmutable::getLastErrors();
+
+        if (
+            $departureDate === false ||
+            ($errors !== false && (
+                $errors['warning_count'] > 0 ||
+                $errors['error_count'] > 0
+            )) ||
+            $departureDate->format('Y-m-d') !== $value
+        ) {
+            $context->buildViolation('Invalid departure date.')
+                ->addViolation();
+
+            return;
+        }
+
         $today = new DateTimeImmutable('today');
 
         if ($departureDate < $today) {
