@@ -7,10 +7,22 @@ use App\Dto\Flight\SearchFlightDto;
 use App\Entity\Airport;
 use App\Entity\Flight;
 use DateTimeImmutable;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-class SearchFlightController extends AbstractController {
+/**
+ * Handles searching flights.
+ */
+class SearchFlightController extends AbstractController
+{
+    /**
+     * Searches for flights based on origin, destination, and departure date.
+     *
+     * @param Request $request The HTTP request containing the flight search criteria.
+     *
+     * @return JsonResponse The matching flights or an error response.
+     */
     #[Route('/api/flights', methods: ['GET'])]
     public function __invoke(Request $request)
     {
@@ -38,7 +50,8 @@ class SearchFlightController extends AbstractController {
         if ($originAirport === null) {
             return $this->errorResponse(
                 'Origin airport not found.',
-            400);
+                400
+            );
         }
 
         $destinationAirport = $airportRepository->find($dto->destination);
@@ -46,12 +59,15 @@ class SearchFlightController extends AbstractController {
         if ($destinationAirport === null) {
             return $this->errorResponse(
                 'Destination airport not found.',
-            400);
+                400
+            );
         }
+
         if ($dto->origin === $dto->destination) {
             return $this->errorResponse(
                 'Origin and destination airports cannot be the same.',
-            400);
+                400
+            );
         }
 
         $flightRepository = $this->entityManager->getRepository(Flight::class);

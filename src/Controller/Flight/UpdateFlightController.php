@@ -6,11 +6,23 @@ use App\Controller\AbstractController;
 use App\Dto\Flight\UpdateFlightDto;
 use App\Entity\Airport;
 use App\Entity\Flight;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Handles updating flights.
+ */
 class UpdateFlightController extends AbstractController
 {
+    /**
+     * Updates an existing flight.
+     *
+     * @param int $flightId The ID of the flight to update.
+     * @param Request $request The HTTP request containing the updated flight data.
+     *
+     * @return JsonResponse The updated flight or an error response.
+     */
     #[Route('/api/flights/{flightId}', methods: ['PATCH'])]
     public function __invoke(int $flightId, Request $request)
     {

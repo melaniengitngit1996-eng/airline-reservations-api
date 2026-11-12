@@ -4,9 +4,21 @@ namespace App\Controller\Flight;
 
 use App\Controller\AbstractController;
 use App\Entity\Flight;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-class GetFlightController extends AbstractController {
+/**
+ * Handles retrieving flights.
+ */
+class GetFlightController extends AbstractController
+{
+    /**
+     * Retrieves an existing flight.
+     *
+     * @param int $flightId The ID of the flight to retrieve.
+     *
+     * @return JsonResponse The flight data or an error response.
+     */
     #[Route('/api/flights/{flightId}', methods: ['GET'])]
     public function __invoke(int $flightId)
     {
