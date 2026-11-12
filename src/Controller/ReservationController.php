@@ -79,18 +79,4 @@ class ReservationController {
             ),
         ]);
     }
-
-    #[Route('/{id}', methods: ['DELETE'])]
-    public function delete(int $id): JsonResponse
-    {
-        try {
-            $this->reservationService->delete($id);
-        } catch (\DomainException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage()
-            ], 404);
-        }
-
-        return new JsonResponse(null, 204);
-    }
 }
