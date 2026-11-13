@@ -40,7 +40,7 @@ class GetAllReservationsController extends AbstractController {
 
                 'passengers' => array_map(
                     fn ($reservationPassenger) => [
-                        'id' => $reservationPassenger->getPassenger()->getId(),
+                        'id' => $reservationPassenger->getId(),
                         'first_name' => $reservationPassenger->getPassenger()->getFirstName(),
                         'last_name' => $reservationPassenger->getPassenger()->getLastName(),
                         'email' => $reservationPassenger->getPassenger()->getEmail(),
