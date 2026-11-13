@@ -26,7 +26,7 @@ class SearchFlightController extends AbstractController
     #[Route('/api/flights', methods: ['GET'])]
     public function __invoke(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
+        $data = $request->query->all();
 
         $dto = new SearchFlightDto();
         $dto->origin = $data['origin'] ?? 0;
