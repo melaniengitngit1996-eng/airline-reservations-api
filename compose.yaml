@@ -6,8 +6,6 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
-    environment:
-      DATABASE_URL: "mysql://airline_user:airline_password@database:3306/airline_reservation?serverVersion=8.0.44&charset=utf8mb4"
     depends_on:
       database:
         condition: service_healthy
