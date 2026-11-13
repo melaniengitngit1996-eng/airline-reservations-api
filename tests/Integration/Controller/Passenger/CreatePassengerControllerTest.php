@@ -1,5 +1,7 @@
 <?php
 
+use App\Controller\Passenger\CreatePassengerController;
+
 it('has create passenger API endpoint', function () {
     $client = $this->createClient();
 

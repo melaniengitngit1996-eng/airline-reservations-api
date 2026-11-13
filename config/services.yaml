@@ -37,6 +37,16 @@ services:
             $entityManager: '@doctrine.orm.entity_manager'
             $validator: '@validator'
             $objectMapper: '@object_mapper'
+    App\Controller\Passenger\GetAllPassengersController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\Passenger\GetPassengerController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
     App\Controller\Airport\CreateAirportController:
         arguments:
             $entityManager: '@doctrine.orm.entity_manager'
@@ -67,6 +77,11 @@ services:
             $entityManager: '@doctrine.orm.entity_manager'
             $validator: '@validator'
             $objectMapper: '@object_mapper'
+    App\Controller\Seat\GetSeatsController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
     App\Controller\Flight\CreateFlightController:
         arguments:
             $entityManager: '@doctrine.orm.entity_manager'
@@ -78,6 +93,11 @@ services:
             $validator: '@validator'
             $objectMapper: '@object_mapper'
     App\Controller\Flight\SearchFlightController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\Flight\UpdateFlightController:
         arguments:
             $entityManager: '@doctrine.orm.entity_manager'
             $validator: '@validator'
