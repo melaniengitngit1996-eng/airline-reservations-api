@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Represents a passenger.
@@ -16,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: PassengerRepository::class)]
 #[ORM\Table(name: 'passengers')]
 #[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(fields: ['email'],message: 'This email is already used.')]
 class Passenger
 {
     /**
