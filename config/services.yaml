@@ -37,6 +37,16 @@ services:
             $entityManager: '@doctrine.orm.entity_manager'
             $validator: '@validator'
             $objectMapper: '@object_mapper'
+    App\Controller\Passenger\GetAllPassengersController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\Passenger\GetPassengerController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
     App\Controller\Airport\CreateAirportController:
         arguments:
             $entityManager: '@doctrine.orm.entity_manager'
@@ -47,6 +57,79 @@ services:
             $entityManager: '@doctrine.orm.entity_manager'
             $validator: '@validator'
             $objectMapper: '@object_mapper'
+<<<<<<< Updated upstream
+=======
+    App\Controller\Seat\GetSeatsController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\Flight\CreateFlightController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\Reservation\CreateReservationController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\Flight\SearchFlightController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\Flight\UpdateFlightController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\ReservationPassenger\CreateReservationPassengerController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\Reservation\DeleteReservationController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\ReservationPassenger\DeleteReservationPassengerController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\Flight\DeleteFlightController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\ReservationPassenger\UpdateReservationPassengerController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\Reservation\GetReservationController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\Flight\GetFlightController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\Reservation\GetAllReservationsController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+    App\Controller\ReservationPassenger\GetReservationPassengerController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $validator: '@validator'
+            $objectMapper: '@object_mapper'
+>>>>>>> Stashed changes
     App\Repository\AirportRepository:
         arguments:
             $registry: '@doctrine'
