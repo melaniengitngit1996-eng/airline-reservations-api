@@ -63,16 +63,16 @@ class FlightFixtures extends Fixture implements FixtureGroupInterface, Dependent
                 'capacity' => 10,
                 'origin' => $manila,
                 'destination' => $iloilo,
-                'departure' => '2026-11-11T09:00:00+08:00',
-                'arrival' => '2026-11-11T10:15:00+08:00',
+                'departure' => '2026-11-30T09:00:00+08:00',
+                'arrival' => '2026-11-30T10:15:00+08:00',
             ],
             [
                 'flightNumber' => '5J 335',
                 'capacity' => 10,
                 'origin' => $manila,
                 'destination' => $kalibo,
-                'departure' => '2026-11-11T13:00:00+08:00',
-                'arrival' => '2026-11-11T14:10:00+08:00',
+                'departure' => '2026-11-30T13:00:00+08:00',
+                'arrival' => '2026-11-30T14:10:00+08:00',
             ],
         ];
 
